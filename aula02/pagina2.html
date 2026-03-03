@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Página 2</h1>
+    <script>
+        let x = 10;
+        // é obrigatório informar o valor de uma variável declarada com const
+        const pi = 3.14;
+
+        if (x === 10) {
+            let x = 20;
+            // mostrará o valor 20
+            console.log(x);
+        } else {
+            let x = 30;
+            console.log(x);
+        }
+
+        // mostrará o valor 10
+        console.log(x);
+        // ocorre erro, porque está tentando redefinir variável que foi definida na linha 11
+        let x = 20;
+        console.log(x);
+    </script>
+</body>
+</html>
