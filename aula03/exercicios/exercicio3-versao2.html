@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 3 - Verificação de Triângulo</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width:720px; margin:2rem auto; padding:0 1rem; }
+        form { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:end; }
+        label { display:flex; flex-direction:column; font-size:0.9rem; margin-bottom:0.25rem; }
+        input[type="number"] { padding:0.4rem; width:10rem; }
+        .invalid { border:2px solid #e74c3c; background:#fff6f6; }
+        .msg { margin-top:1rem; padding:0.75rem; border-radius:6px; }
+        .msg.error { background:#ffecec; color:#b00000; border:1px solid #f5c6c6; }
+        .msg.ok { background:#e9f9ee; color:#0b7a3b; border:1px solid #bfe6c9; }
+        small.hint { display:block; color:#666; margin-top:0.25rem; }
+        button { padding:0.5rem 0.9rem; }
+    </style>
+</head>
+<body>
+    <h1>Exercício 3</h1>
+    <p>
+        Informe os três comprimentos. O programa valida entradas e verifica se formam um triângulo,
+        exibindo também o tipo (Equilátero, Isósceles, Escaleno). Entradas devem ser números positivos.
+    </p>
+
+    <form id="triForm" novalidate>
+        <label>
+            Lado 1
+            <input id="lado1" type="number" step="any" min="0" inputmode="decimal" required>
+        </label>
+
+        <label>
+            Lado 2
+            <input id="lado2" type="number" step="any" min="0" inputmode="decimal" required>
+        </label>
+
+        <label>
+            Lado 3
+            <input id="lado3" type="number" step="any" min="0" inputmode="decimal" required>
+        </label>
+
+        <div style="display:flex; gap:0.5rem;">
+            <button id="verificar" type="submit">Verificar</button>
+            <button id="limpar" type="button">Limpar</button>
+        </div>
+
+        <small class="hint">Use casas decimais com ponto (ex: 3.5). Valores igual a zero ou negativos não são aceitos.</small>
+    </form>
+
+    <div id="resultado" aria-live="polite"></div>
+
+    <script>
+        const form = document.getElementById('triForm');
+        const resultado = document.getElementById('resultado');
+        const inputs = ['lado1','lado2','lado3'].map(id => document.getElementById(id));
+
+        function showMessage(text, type = 'error') {
+            resultado.className = 'msg ' + (type === 'ok' ? 'ok' : 'error');
+            resultado.textContent = text;
+        }
+
+        function clearMessage() {
+            resultado.className = '';
+            resultado.textContent = '';
+        }
+
+        function parseSide(input) {
+            const v = input.value.trim();
+            if (v === '') return NaN;
+            return Number(v);
+        }
+
+        function validateInputs() {
+            let valid = true;
+            inputs.forEach(inp => inp.classList.remove('invalid'));
+            for (const inp of inputs) {
+                const val = parseSide(inp);
+                if (!Number.isFinite(val) || val <= 0) {
+                    inp.classList.add('invalid');
+                    valid = false;
+                }
+            }
+            return valid;
+        }
+
+        // remove invalid state while user types
+        inputs.forEach(inp => inp.addEventListener('input', () => {
+            if (inp.classList.contains('invalid')) inp.classList.remove('invalid');
+            if (resultado.textContent) clearMessage();
+        }));
+
+        form.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            clearMessage();
+
+            if (!validateInputs()) {
+                showMessage('Corrija os campos em vermelho: insira números positivos válidos.', 'error');
+                return;
+            }
+
+            const [a,b,c] = inputs.map(parseSide);
+
+            // checar triângulo degenerado (soma igual) separadamente
+            const isTriangle = (a < b + c) && (b < a + c) && (c < a + b);
+            const isDegenerate = (a === b + c) || (b === a + c) || (c === a + b);
+
+            if (isTriangle) {
+                let tipo = '';
+                if (a === b && b === c) tipo = 'Equilátero';
+                else if (a === b || b === c || a === c) tipo = 'Isósceles';
+                else tipo = 'Escaleno';
+
+                showMessage(`Os lados formam um triângulo (${tipo}).`, 'ok');
+            } else if (isDegenerate) {
+                showMessage('Os segmentos são colineares (caso degenerado): não formam um triângulo com área > 0.', 'error');
+            } else {
+                showMessage('Não é possível formar um triângulo com esses comprimentos.', 'error');
+            }
+        });
+
+        document.getElementById('limpar').addEventListener('click', () => {
+            inputs.forEach(i => { i.value = ''; i.classList.remove('invalid'); });
+            clearMessage();
+            inputs[0].focus();
+        });
+    </script>
+</body>
+</html>
