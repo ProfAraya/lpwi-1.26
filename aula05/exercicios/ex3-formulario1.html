@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Funções - Exercício 3 - versão com formulário</h1>
+    <p>Verificar se é par.
+        Crie uma função que receba um número
+        e retorne true se for par ou false se for ímpar
+    </p>
+
+    <form>
+        <!-- rótulo para o campo input que tem id = id_num -->
+        <label for="id_num">Digite um número</label>
+        <!-- cria campo no formulário para receber  número digitado pelo usuário -->
+        <input type="number" name="v_num" id="id_num">
+        <br>
+        <!-- cria botão para o usuário clicar após informar o número 
+             onclick aciona a função Javascript verificaParOuImpar() -->
+        <button id="id_button">Par ou Ímpar</button>
+    </form>
+
+    <p>O número digitado é <span id="resultado"></span></p>
+
+    <script>
+        // segunda versão - coloca o preventDefault dentro da função verificaParOuImpar (para isso passa a variável "e" que representa o evento como parâmetro )
+        // associa o tratamento do evento ao click no botão
+        document.getElementById("id_button").addEventListener("click", e => verificaParOuImpar(e));
+
+        function verificaParOuImpar(evento) {
+
+            evento.preventDefault();
+
+            // obter o número digitado
+            const numero = Number(document.getElementById("id_num").value);
+
+            // inicializa variável que vai conter o resultado
+            let parOuImpar = "";
+
+            // verifica se é par ou ímpar
+            if (numero % 2 === 0) {
+                parOuImpar = "par"
+            } else {
+                parOuImpar = "ímpar"
+            }
+            // apresenta o resultado 
+            document.getElementById("resultado").innerHTML = parOuImpar;
+
+        }
+    </script>
+</body>
+</html>
