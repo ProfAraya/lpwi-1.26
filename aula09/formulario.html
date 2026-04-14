@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Formulário</h1>
+    <!-- 
+         method 
+         - GET
+           - dados do formulário aparecem na barra de endereços do navegador
+           - tem limite da quantidade de dados que pode transferir (2KB)
+         - POST
+           - dados do formulário não aparecem na barra do navegador (são transferidos no cabeçalho do protocolo HTTP)
+           - não tem limite da quantidade de dados que pode transferir
+
+          action
+          - indica o programa no backend que irá receber os dados do formulário
+          - se não for indicado, significa que o próprio programa 
+            que contém o formulário receberá os dados do mesmo
+         -->
+    <form id="FormLogin" method="GET" action="destino.prg">
+        <label for="id_usuario">Usuário:</label>
+        <input type="text" name="usuario" id="id_usuario" placeholder="usuario123">
+        <br>
+        <label for="id_senha">Senha:</label>
+        <input type="password" name="senha" id="id_senha" placeholder="suaSenha">
+        <br>
+        <button type="submit">
+            Enviar
+        </button>
+    </form>
+
+    <script>
+        document.getElementById("FormLogin").addEventListener('submit', (e) => {
+            // cancela comportamento padrão do botão submit
+            e.preventDefault();
+            // recupera elemento do formulário
+            const form = document.getElementById("FormLogin")
+            // recupera dos dados informados no formulário
+            const data = new FormData(form);
+            const usuario = data.get('usuario');
+            const senha = data.get('senha');
+
+            // verifica se usuario e senha foram informados
+            if (usuario.length === 0) {
+                alert('Preencha o nome do usuário')
+            } else if (senha.length === 0) {
+                alert('Preencha a senha')
+            } else {
+                // exibe os dados
+                console.log(usuario, senha);
+            }
+        })
+    </script>
+
+
+
+</body>
+
+</html>
