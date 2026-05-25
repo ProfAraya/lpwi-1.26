@@ -17,7 +17,18 @@ npm init -y
 npm install prompt-sync
 ```
 5. Neste ponto, devemos criar o arquivo `.gitignore` cujo objetivo é informar ao git para ignorar algumas pastas e arquivos de modo que não sejam versionados nem armazenados no Github. Fazemos isso para economizar espaço no repositório no Github e também para evitar versionar arquivos com informações sensíveis como senhas e chaves criptográficas. Criamos o arquivo `.gitignore` e colocamos o nome da pasta `node_modules` como conteúdo.
-6. Para executar o seu programa:
+6. Crie o arquivo `index.js` e digite o código abaixo:
+```
+// 1. Importa a biblioteca
+const prompt = require('prompt-sync')();
+
+// 2. Recebe o nome do usuário
+const nome = prompt('Digite seu nome: ');
+
+// 3. Exibe a mensagem de saudação
+console.log(`Olá, ${nome}`);
+```
+8. Executar o seu programa com o comando abaixo:
 ```
 node index.js
 ``` 
